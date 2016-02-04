@@ -10,7 +10,7 @@ policy_module(systemd, 1.11.1)
 ## Enable support for systemd-tmpfiles to manage all non-security files.
 ## </p>
 ## </desc>
-gen_tunable(systemd_tmpfiles_manage_all, false)
+gen_tunable(systemd_tmpfiles_manage_all, true)
 
 ## <desc>
 ## <p>
@@ -1332,6 +1332,10 @@ files_relabelfrom_home(systemd_tmpfiles_t)
 files_relabelto_home(systemd_tmpfiles_t)
 files_relabelto_etc_dirs(systemd_tmpfiles_t)
 files_setattr_lock_dirs(systemd_tmpfiles_t)
+
+files_manage_non_auth_files(systemd_tmpfiles_t)
+files_relabel_non_auth_files(systemd_tmpfiles_t)
+
 # for /etc/mtab
 files_manage_etc_symlinks(systemd_tmpfiles_t)
 
