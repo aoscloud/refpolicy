@@ -492,6 +492,7 @@ files_var_lib_filetrans(syslogd_t, syslogd_var_lib_t, { file dir })
 
 fs_getattr_all_fs(syslogd_t)
 fs_search_auto_mountpoints(syslogd_t)
+fs_search_tmpfs(syslogd_t)
 
 mls_file_write_all_levels(syslogd_t) # Need to be able to write to /var/run/ and /var/log directories
 
@@ -551,6 +552,8 @@ ifdef(`init_systemd',`
 
 	# needed for systemd-initrd case when syslog socket is unlabelled
 	logging_send_syslog_msg(syslogd_t)
+
+	logging_set_loginuid(syslogd_t)
 
 	systemd_manage_journal_files(syslogd_t)
 
