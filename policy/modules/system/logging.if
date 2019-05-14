@@ -661,6 +661,7 @@ interface(`logging_send_syslog_msg',`
 	')
 
 	allow $1 devlog_t:sock_file write_sock_file_perms;
+	allow $1 devlog_t:lnk_file read_lnk_file_perms;
 
 	# systemd journal socket is in /run/systemd/journal/dev-log
 	init_search_run($1)
@@ -722,6 +723,7 @@ interface(`logging_relabelto_devlog_sock_files',`
 	')
 
 	allow $1 devlog_t:sock_file relabelto_sock_file_perms;
+	allow $1 devlog_t:lnk_file relabelto_lnk_file_perms;
 ')
 
 ########################################
@@ -741,6 +743,8 @@ interface(`logging_create_devlog',`
 
 	allow $1 devlog_t:sock_file manage_sock_file_perms;
 	dev_filetrans($1, devlog_t, sock_file)
+	allow $1 devlog_t:lnk_file manage_lnk_file_perms;
+	dev_filetrans($1, devlog_t, lnk_file)
 	init_runtime_filetrans($1, devlog_t, sock_file, "syslog")
 ')
 
