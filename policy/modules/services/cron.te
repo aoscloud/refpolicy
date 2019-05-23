@@ -318,6 +318,8 @@ miscfiles_read_localization(crond_t)
 
 userdom_list_user_home_dirs(crond_t)
 
+logwatch_search_cache_dir(crond_t)
+
 tunable_policy(`cron_userdomain_transition',`
 	dontaudit crond_t cronjob_t:process transition;
 	dontaudit crond_t cronjob_t:fd use;
