@@ -275,6 +275,8 @@ seutil_dontaudit_search_config(rpcd_t)
 
 userdom_signal_all_users(rpcd_t)
 
+mls_file_read_to_clearance(rpcd_t)
+
 ifdef(`distro_debian',`
 	term_dontaudit_use_unallocated_ttys(rpcd_t)
 ')
