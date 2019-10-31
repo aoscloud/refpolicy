@@ -362,6 +362,8 @@ mls_fd_use_all_levels(kernel_t)
 # https://bugzilla.redhat.com/show_bug.cgi?id=667370
 mls_file_downgrade(kernel_t)
 
+mls_key_write_all_levels(kernel_t)
+
 ifdef(`distro_redhat',`
 	# Bugzilla 222337
 	fs_rw_tmpfs_chr_files(kernel_t)
