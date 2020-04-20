@@ -50,6 +50,7 @@ ubac_fd_exempt(sysadm_t)
 
 init_exec(sysadm_t)
 init_admin(sysadm_t)
+init_script_role_transition(sysadm_r)
 
 # Add/remove user home directories
 userdom_manage_user_home_dirs(sysadm_t)
