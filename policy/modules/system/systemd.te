@@ -1261,6 +1261,8 @@ seutil_read_file_contexts(systemd_sessions_t)
 
 systemd_log_parse_environment(systemd_sessions_t)
 
+mls_file_read_to_clearance(systemd_sessions_t)
+mls_file_write_all_levels(systemd_sessions_t)
 
 #########################################
 #
