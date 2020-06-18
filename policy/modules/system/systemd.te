@@ -326,6 +326,9 @@ files_search_var_lib(systemd_backlight_t)
 
 kernel_read_kernel_sysctls(systemd_backlight_t)
 
+mls_file_write_to_clearance(systemd_backlight_t)
+mls_file_read_to_clearance(systemd_backlight_t)
+
 #######################################
 #
 # Binfmt local policy
@@ -460,6 +463,9 @@ systemd_log_parse_environment(systemd_generator_t)
 
 term_use_unallocated_ttys(systemd_generator_t)
 
+mls_file_write_to_clearance(systemd_generator_t)
+mls_file_read_to_clearance(systemd_generator_t)
+
 ifdef(`distro_gentoo',`
 	corecmd_shell_entry_type(systemd_generator_t)
 ')
@@ -496,6 +502,8 @@ sysnet_etc_filetrans_config(systemd_hostnamed_t)
 sysnet_manage_config(systemd_hostnamed_t)
 
 systemd_log_parse_environment(systemd_hostnamed_t)
+
+mls_file_read_to_clearance(systemd_hostnamed_t)
 
 optional_policy(`
 	dbus_connect_system_bus(systemd_hostnamed_t)
@@ -818,6 +826,8 @@ modutils_read_module_deps(systemd_modules_load_t)
 
 systemd_log_parse_environment(systemd_modules_load_t)
 
+mls_file_read_to_clearance(systemd_modules_load_t)
+
 ########################################
 #
 # networkd local policy
@@ -875,6 +885,8 @@ miscfiles_read_localization(systemd_networkd_t)
 sysnet_read_config(systemd_networkd_t)
 
 systemd_log_parse_environment(systemd_networkd_t)
+
+mls_file_read_to_clearance(systemd_networkd_t)
 
 optional_policy(`
 	dbus_system_bus_client(systemd_networkd_t)
@@ -1159,6 +1171,9 @@ udev_read_runtime_files(systemd_rfkill_t)
 
 systemd_log_parse_environment(systemd_rfkill_t)
 
+mls_file_write_to_clearance(systemd_rfkill_t)
+mls_file_read_to_clearance(systemd_rfkill_t)
+
 #########################################
 #
 # Resolved local policy
@@ -1201,6 +1216,8 @@ files_list_runtime(systemd_resolved_t)
 init_dgram_send(systemd_resolved_t)
 
 seutil_read_file_contexts(systemd_resolved_t)
+
+mls_file_read_to_clearance(systemd_resolved_t)
 
 systemd_log_parse_environment(systemd_resolved_t)
 systemd_read_networkd_runtime(systemd_resolved_t)
