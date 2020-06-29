@@ -549,10 +549,8 @@ userdom_map_user_home_content_files(semanage_t)
 userdom_read_user_tmp_files(semanage_t)
 userdom_map_user_tmp_files(semanage_t)
 
-ifdef(`distro_debian',`
-	files_read_var_lib_files(semanage_t)
-	files_read_var_lib_symlinks(semanage_t)
-')
+files_read_var_lib_files(semanage_t)
+files_read_var_lib_symlinks(semanage_t)
 
 ifdef(`distro_ubuntu',`
 	optional_policy(`
