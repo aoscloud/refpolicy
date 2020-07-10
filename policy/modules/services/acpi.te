@@ -157,6 +157,8 @@ userdom_dontaudit_use_unpriv_user_fds(acpid_t)
 userdom_dontaudit_search_user_home_dirs(acpid_t)
 userdom_dontaudit_search_user_home_content(acpid_t)
 
+mls_file_read_to_clearance(acpid_t)
+
 optional_policy(`
 	automount_domtrans(acpid_t)
 ')
