@@ -41,6 +41,8 @@ dontaudit kmod_t self:capability sys_admin;
 allow kmod_t self:udp_socket create_socket_perms;
 allow kmod_t self:rawip_socket create_socket_perms;
 
+allow kmod_t self:lockdown confidentiality;
+
 # Read module config and dependency information
 list_dirs_pattern(kmod_t, modules_conf_t, modules_conf_t)
 read_files_pattern(kmod_t, modules_conf_t, modules_conf_t)
