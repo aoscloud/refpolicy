@@ -330,6 +330,8 @@ allow ssh_keygen_t self:process { sigchld sigkill sigstop signull signal };
 
 allow ssh_keygen_t self:unix_stream_socket create_stream_socket_perms;
 
+allow ssh_keygen_t proc_t:file read_file_perms;
+
 allow ssh_keygen_t sshd_key_t:file manage_file_perms;
 files_etc_filetrans(ssh_keygen_t, sshd_key_t, file)
 
