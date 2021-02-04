@@ -943,6 +943,7 @@ interface(`init_unix_stream_socket_connectto',`
 	')
 
 	allow $1 init_t:unix_stream_socket connectto;
+	allow $1 initrc_t:unix_stream_socket connectto;
 ')
 
 ########################################
