@@ -49,6 +49,13 @@ files_var_lib_filetrans(dnsmasq_t, dnsmasq_lease_t, file)
 allow dnsmasq_t dnsmasq_var_log_t:file append_file_perms;
 allow dnsmasq_t dnsmasq_var_log_t:file create_file_perms;
 allow dnsmasq_t dnsmasq_var_log_t:file setattr_file_perms;
+
+allow dnsmasq_t var_run_t:file { getattr open read };
+allow dnsmasq_t systemd_resolved_runtime_t:dir { read watch };
+allow dnsmasq_t etc_t:file map;
+
+systemd_read_resolved_runtime(dnsmasq_t)
+
 logging_log_filetrans(dnsmasq_t, dnsmasq_var_log_t, file)
 
 manage_dirs_pattern(dnsmasq_t, dnsmasq_runtime_t, dnsmasq_runtime_t)
