@@ -1281,6 +1281,9 @@ systemd_log_parse_environment(systemd_sessions_t)
 mls_file_read_to_clearance(systemd_sessions_t)
 mls_file_write_all_levels(systemd_sessions_t)
 
+fs_getattr_cgroup(systemd_sessions_t)
+fs_search_cgroup_dirs(systemd_sessions_t)
+
 #########################################
 #
 # Sysusers local policy
@@ -1421,6 +1424,8 @@ mls_file_write_all_levels(systemd_tmpfiles_t)
 mls_file_read_all_levels(systemd_tmpfiles_t)
 mls_file_downgrade(systemd_tmpfiles_t)
 mls_file_upgrade(systemd_tmpfiles_t)
+
+fs_getattr_cgroup(systemd_tmpfiles_t)
 
 userdom_manage_user_runtime_root_dirs(systemd_tmpfiles_t)
 userdom_relabel_user_runtime_root_dirs(systemd_tmpfiles_t)
@@ -1577,6 +1582,8 @@ fs_getattr_tmpfs(systemd_user_runtime_dir_t)
 fs_list_tmpfs(systemd_user_runtime_dir_t)
 fs_unmount_tmpfs(systemd_user_runtime_dir_t)
 fs_relabelfrom_tmpfs_dirs(systemd_user_runtime_dir_t)
+fs_getattr_cgroup(systemd_user_runtime_dir_t)
+fs_search_cgroup_dirs(systemd_user_runtime_dir_t)
 
 kernel_read_kernel_sysctls(systemd_user_runtime_dir_t)
 
