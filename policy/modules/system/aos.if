@@ -19,6 +19,24 @@ interface(`aos_domtrans',`
 	domtrans_pattern($1, aos_exec_t, aos_t)
 ')
 
+########################################
+## <summary>
+##	Use aos fd.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`use_aos_fd',`
+	gen_require(`
+		type aos_t;
+	')
+
+    allow $1 aos_t:fd use;
+')
+
 ######################################
 ## <summary>
 ##	Execute aos in the caller domain.
@@ -53,13 +71,13 @@ interface(`aos_read_pid_files',`
 		type aos_var_run_t;
 	')
 
-	files_search_pids($1)
+	files_search_runtime($1)
 	read_files_pattern($1, aos_var_run_t, aos_var_run_t)
 ')
 
 ########################################
 ## <summary>
-##	Get attributes and search aos var run dirs.
+##	Manage aos var run dirs.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -67,12 +85,12 @@ interface(`aos_read_pid_files',`
 ##	</summary>
 ## </param>
 #
-interface(`files_getattr_search_aos_var_run_dir',`
+interface(`manage_aos_var_run_dir',`
 	gen_require(`
 		type aos_var_run_t;
 	')
 
-	allow $1 aos_var_run_t:dir { getattr search };
+	allow $1 aos_var_run_t:dir { add_entry_dir_perms read };
 ')
 
 ########################################
@@ -109,7 +127,7 @@ interface(`files_manage_quota_aos',`
 	')
 
 	allow $1 aos_var_run_t:dir { add_name remove_name write };
-	allow $1 aos_var_run_t:file { create rename setattr write quotaon unlink };
+	allow $1 aos_var_run_t:file { manage_file_perms quotaon exec_file_perms };
 	allow $1 aos_var_run_t:filesystem { quotaget quotamod };
 ')
 
