@@ -374,7 +374,7 @@ userdom_read_all_users_state(ifconfig_t)
 userdom_use_user_terminals(ifconfig_t)
 userdom_use_all_users_fds(ifconfig_t)
 
-ifdef(`distro_debian',`fs_search_cgroup_dirs(systemd_backlight_t)
+ifdef(`distro_debian',`
 	term_dontaudit_use_unallocated_ttys(ifconfig_t)
 ')
 
