@@ -75,6 +75,7 @@ init_script_file(syslogd_initrc_exec_t)
 
 type syslogd_runtime_t alias syslogd_var_run_t;
 files_runtime_file(syslogd_runtime_t)
+dbus_write_system_bus_sockets(syslogd_runtime_t)
 
 type syslogd_tmp_t;
 files_tmp_file(syslogd_tmp_t)

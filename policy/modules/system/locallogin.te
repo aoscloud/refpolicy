@@ -33,8 +33,8 @@ role system_r types sulogin_t;
 #
 
 allow local_login_t self:capability { chown dac_read_search dac_override fowner fsetid kill setgid setuid sys_nice sys_resource sys_tty_config };
-dontaudit local_login_t self:capability net_admin;
-allow local_login_t self:process { getcap setcap setexec setrlimit setsched };
+# dontaudit local_login_t self:capability net_admin;
+allow local_login_t self:process { getcap setcap setexec setrlimit setsched setpgid signal };
 allow local_login_t self:fd use;
 allow local_login_t self:fifo_file rw_fifo_file_perms;
 allow local_login_t self:sock_file read_sock_file_perms;
@@ -77,22 +77,22 @@ dev_getattr_power_mgmt_dev(local_login_t)
 dev_setattr_power_mgmt_dev(local_login_t)
 dev_getattr_sound_dev(local_login_t)
 dev_setattr_sound_dev(local_login_t)
-dev_dontaudit_getattr_acpi_bios_dev(local_login_t)
-dev_dontaudit_setattr_acpi_bios_dev(local_login_t)
-dev_dontaudit_read_framebuffer(local_login_t)
-dev_dontaudit_setattr_framebuffer_dev(local_login_t)
-dev_dontaudit_getattr_generic_blk_files(local_login_t)
-dev_dontaudit_setattr_generic_blk_files(local_login_t)
-dev_dontaudit_getattr_generic_chr_files(local_login_t)
-dev_dontaudit_setattr_generic_chr_files(local_login_t)
-dev_dontaudit_setattr_generic_symlinks(local_login_t)
-dev_dontaudit_getattr_misc_dev(local_login_t)
-dev_dontaudit_setattr_misc_dev(local_login_t)
-dev_dontaudit_getattr_scanner_dev(local_login_t)
-dev_dontaudit_setattr_scanner_dev(local_login_t)
-dev_dontaudit_search_sysfs(local_login_t)
-dev_dontaudit_getattr_video_dev(local_login_t)
-dev_dontaudit_setattr_video_dev(local_login_t)
+# dev_dontaudit_getattr_acpi_bios_dev(local_login_t)
+# dev_dontaudit_setattr_acpi_bios_dev(local_login_t)
+# dev_dontaudit_read_framebuffer(local_login_t)
+# dev_dontaudit_setattr_framebuffer_dev(local_login_t)
+# dev_dontaudit_getattr_generic_blk_files(local_login_t)
+# dev_dontaudit_setattr_generic_blk_files(local_login_t)
+# dev_dontaudit_getattr_generic_chr_files(local_login_t)
+# dev_dontaudit_setattr_generic_chr_files(local_login_t)
+# dev_dontaudit_setattr_generic_symlinks(local_login_t)
+# dev_dontaudit_getattr_misc_dev(local_login_t)
+# dev_dontaudit_setattr_misc_dev(local_login_t)
+# dev_dontaudit_getattr_scanner_dev(local_login_t)
+# dev_dontaudit_setattr_scanner_dev(local_login_t)
+# dev_dontaudit_search_sysfs(local_login_t)
+# dev_dontaudit_getattr_video_dev(local_login_t)
+# dev_dontaudit_setattr_video_dev(local_login_t)
 
 domain_read_all_entry_files(local_login_t)
 
@@ -110,10 +110,10 @@ files_read_var_symlinks(local_login_t)
 
 fs_search_auto_mountpoints(local_login_t)
 
-storage_dontaudit_getattr_fixed_disk_dev(local_login_t)
-storage_dontaudit_setattr_fixed_disk_dev(local_login_t)
-storage_dontaudit_getattr_removable_dev(local_login_t)
-storage_dontaudit_setattr_removable_dev(local_login_t)
+# storage_dontaudit_getattr_fixed_disk_dev(local_login_t)
+# storage_dontaudit_setattr_fixed_disk_dev(local_login_t)
+# storage_dontaudit_getattr_removable_dev(local_login_t)
+# storage_dontaudit_setattr_removable_dev(local_login_t)
 
 term_use_all_ttys(local_login_t)
 term_use_unallocated_ttys(local_login_t)
@@ -130,7 +130,7 @@ auth_manage_pam_console_data(local_login_t)
 auth_domtrans_pam_console(local_login_t)
 auth_read_pam_motd_dynamic(local_login_t)
 
-init_dontaudit_use_fds(local_login_t)
+# init_dontaudit_use_fds(local_login_t)
 
 miscfiles_read_localization(local_login_t)
 
@@ -141,6 +141,9 @@ userdom_search_user_home_content(local_login_t)
 userdom_use_unpriv_users_fds(local_login_t)
 userdom_sigchld_all_users(local_login_t)
 userdom_create_all_users_keys(local_login_t)
+
+write_logging_runtime_dirs(local_login_t)
+userdom_manage_user_home_files(local_login_t)
 
 ifdef(`init_systemd',`
 	auth_manage_faillog(local_login_t)
@@ -231,7 +234,7 @@ optional_policy(`
 #
 
 allow sulogin_t self:capability { dac_read_search sys_admin sys_tty_config };
-dontaudit sulogin_t self:capability dac_override;
+# dontaudit sulogin_t self:capability dac_override;
 allow sulogin_t self:process setexec;
 allow sulogin_t self:fd use;
 allow sulogin_t self:fifo_file rw_fifo_file_perms;
@@ -248,7 +251,7 @@ kernel_read_system_state(sulogin_t)
 kernel_stream_connect(sulogin_t)
 kernel_use_fds(sulogin_t)
 # because file systems are not mounted:
-kernel_dontaudit_search_unlabeled(sulogin_t)
+# kernel_dontaudit_search_unlabeled(sulogin_t)
 
 fs_search_auto_mountpoints(sulogin_t)
 fs_rw_tmpfs_chr_files(sulogin_t)

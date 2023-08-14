@@ -622,3 +622,21 @@ interface(`unconfined_dbus_connect',`
 
 	allow $1 unconfined_t:dbus acquire_svc;
 ')
+
+########################################
+## <summary>
+##	Transition to the unconfined domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`domain_transition_to_unconfined',`
+	gen_require(`
+		type unconfined_t;
+	')
+
+	allow $1 unconfined_t:process { transition siginh noatsecure rlimitinh };
+')

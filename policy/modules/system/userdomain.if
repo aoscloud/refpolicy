@@ -1918,6 +1918,24 @@ interface(`userdom_manage_user_home_dirs',`
 
 ########################################
 ## <summary>
+##	Manage user home files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`userdom_manage_user_home_files',`
+	gen_require(`
+		type user_home_dir_t;
+	')
+
+	allow $1 user_home_dir_t:file manage_file_perms;
+')
+
+########################################
+## <summary>
 ##	Do not audit attempts to manage user
 ##	home directories.
 ## </summary>

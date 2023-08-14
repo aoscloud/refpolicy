@@ -639,6 +639,25 @@ interface(`dbus_use_system_bus_fds',`
 
 ########################################
 ## <summary>
+##	Allow DBUS system bus to write to its own sockets.
+##	file descriptors.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`dbus_write_system_bus_sockets',`
+	gen_require(`
+		type system_dbusd_t;
+	')
+
+	allow $1 system_dbusd_t:sock_file write;
+')
+
+########################################
+## <summary>
 ##	Do not audit attempts to read and
 ##	write DBUS system bus TCP sockets.
 ## </summary>

@@ -1,4 +1,5 @@
 HOME_DIR	-d	gen_context(system_u:object_r:user_home_dir_t,s0-mls_systemhigh)
+
 HOME_DIR/.+		gen_context(system_u:object_r:user_home_t,s0)
 HOME_DIR/bin(/.*)?		gen_context(system_u:object_r:user_bin_t,s0)
 HOME_DIR/\.local/bin(/.*)?		gen_context(system_u:object_r:user_bin_t,s0)
