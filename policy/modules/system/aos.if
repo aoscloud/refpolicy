@@ -37,6 +37,24 @@ interface(`use_aos_fd',`
     allow $1 aos_t:fd use;
 ')
 
+########################################
+## <summary>
+##	Manage aos sem.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`manage_aos_sem',`
+	gen_require(`
+		type aos_t;
+	')
+
+    allow $1 aos_t:sem { create destroy unix_write associate read unix_read write };
+')
+
 ######################################
 ## <summary>
 ##	Execute aos in the caller domain.
@@ -113,6 +131,42 @@ interface(`files_mounton_aos_dirs',`
 
 ########################################
 ## <summary>
+##	Search a /var/aos directory.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`search_aos_dirs',`
+	gen_require(`
+		type aos_var_run_t;
+	')
+
+	allow $1 aos_var_run_t:dir { search getattr };
+')
+
+########################################
+## <summary>
+##	Read a /var/aos files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`read_aos_files',`
+	gen_require(`
+		type aos_var_run_t;
+	')
+
+	allow $1 aos_var_run_t:file read_file_perms;
+')
+
+########################################
+## <summary>
 ##	Manage quota files in /var/aos directory.
 ## </summary>
 ## <param name="domain">
@@ -126,7 +180,7 @@ interface(`files_manage_quota_aos',`
 		type aos_var_run_t;
 	')
 
-	allow $1 aos_var_run_t:dir { add_name remove_name write };
+	allow $1 aos_var_run_t:dir manage_dir_perms;
 	allow $1 aos_var_run_t:file { manage_file_perms quotaon exec_file_perms };
 	allow $1 aos_var_run_t:filesystem { quotaget quotamod };
 ')
