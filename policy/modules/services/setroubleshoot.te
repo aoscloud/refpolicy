@@ -108,7 +108,7 @@ init_dontaudit_write_utmp(setroubleshootd_t)
 
 libs_exec_ld_so(setroubleshootd_t)
 
-locallogin_dontaudit_use_fds(setroubleshootd_t)
+#locallogin_dontaudit_use_fds(setroubleshootd_t)
 
 logging_send_audit_msgs(setroubleshootd_t)
 logging_send_syslog_msg(setroubleshootd_t)

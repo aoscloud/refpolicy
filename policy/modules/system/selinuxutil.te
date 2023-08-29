@@ -396,9 +396,9 @@ ifdef(`distro_ubuntu',`
 	')
 ')
 
-optional_policy(`
-	locallogin_dontaudit_use_fds(restorecond_t)
-')
+#optional_policy(`
+#	locallogin_dontaudit_use_fds(restorecond_t)
+#')
 
 optional_policy(`
 	rpm_use_script_fds(restorecond_t)

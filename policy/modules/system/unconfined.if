@@ -177,6 +177,14 @@ interface(`unconfined_domtrans',`
 	domtrans_pattern($1, unconfined_exec_t, unconfined_t)
 ')
 
+interface(`login_unconfined_domtrans',`
+	gen_require(`
+		type unconfined_t, login_exec_t;
+	')
+
+	domtrans_pattern($1, login_exec_t, unconfined_t)
+')
+
 ########################################
 ## <summary>
 ##	Execute specified programs in the unconfined domain.

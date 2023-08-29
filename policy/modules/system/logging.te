@@ -110,7 +110,7 @@ allow auditctl_t self:netlink_audit_socket nlmsg_readpriv;
 
 read_files_pattern(auditctl_t, auditd_etc_t, auditd_etc_t)
 allow auditctl_t auditd_etc_t:dir list_dir_perms;
-dontaudit auditctl_t auditd_etc_t:file map;
+#dontaudit auditctl_t auditd_etc_t:file map;
 
 corecmd_search_bin(auditctl_t)
 
@@ -119,7 +119,7 @@ files_getattr_all_dirs(auditctl_t)
 files_getattr_all_files(auditctl_t)
 files_read_etc_files(auditctl_t)
 
-kernel_dontaudit_getattr_proc(auditctl_t)
+#kernel_dontaudit_getattr_proc(auditctl_t)
 kernel_read_kernel_sysctls(auditctl_t)
 kernel_read_proc_symlinks(auditctl_t)
 kernel_read_system_state(auditctl_t)
@@ -132,7 +132,7 @@ mls_file_read_all_levels(auditctl_t)
 
 term_use_all_terms(auditctl_t)
 
-init_dontaudit_use_fds(auditctl_t)
+#init_dontaudit_use_fds(auditctl_t)
 
 logging_set_audit_parameters(auditctl_t)
 logging_send_syslog_msg(auditctl_t)
@@ -146,9 +146,9 @@ ifdef(`init_systemd',`
 	systemd_stream_connect_userdb(auditctl_t)
 ')
 
-optional_policy(`
-	locallogin_dontaudit_use_fds(auditctl_t)
-')
+# optional_policy(`
+#	locallogin_dontaudit_use_fds(auditctl_t)
+# ')
 
 ########################################
 #
@@ -156,7 +156,7 @@ optional_policy(`
 #
 
 allow auditd_t self:capability { chown fsetid sys_nice sys_resource };
-dontaudit auditd_t self:capability sys_tty_config;
+#dontaudit auditd_t self:capability sys_tty_config;
 allow auditd_t self:process { getcap signal_perms setcap setpgid setsched };
 allow auditd_t self:file rw_file_perms;
 allow auditd_t self:unix_dgram_socket create_socket_perms;
@@ -165,7 +165,7 @@ allow auditd_t self:tcp_socket create_stream_socket_perms;
 
 allow auditd_t auditd_etc_t:dir list_dir_perms;
 allow auditd_t auditd_etc_t:file read_file_perms;
-dontaudit auditd_t auditd_etc_t:file map;
+#dontaudit auditd_t auditd_etc_t:file map;
 
 manage_files_pattern(auditd_t, auditd_log_t, auditd_log_t)
 allow auditd_t auditd_log_t:dir setattr;
@@ -227,13 +227,13 @@ mls_file_write_all_levels(auditd_t) # Need to be able to write to /var/run/ dire
 mls_fd_use_all_levels(auditd_t)
 mls_socket_write_all_levels(auditd_t)
 
-seutil_dontaudit_read_config(auditd_t)
+#seutil_dontaudit_read_config(auditd_t)
 
 sysnet_dns_name_resolve(auditd_t)
 
 userdom_use_user_terminals(auditd_t)
-userdom_dontaudit_use_unpriv_user_fds(auditd_t)
-userdom_dontaudit_search_user_home_dirs(auditd_t)
+#userdom_dontaudit_use_unpriv_user_fds(auditd_t)
+#userdom_dontaudit_search_user_home_dirs(auditd_t)
 
 ifdef(`distro_ubuntu',`
 	optional_policy(`
@@ -334,7 +334,7 @@ sysnet_dns_name_resolve(audisp_remote_t)
 #
 
 allow klogd_t self:capability sys_admin;
-dontaudit klogd_t self:capability { sys_resource sys_tty_config };
+#dontaudit klogd_t self:capability { sys_resource sys_tty_config };
 allow klogd_t self:process signal_perms;
 corecmd_bin_entry_type(klogd_t)
 
@@ -373,7 +373,7 @@ miscfiles_read_localization(klogd_t)
 
 mls_file_read_all_levels(klogd_t)
 
-userdom_dontaudit_search_user_home_dirs(klogd_t)
+#userdom_dontaudit_search_user_home_dirs(klogd_t)
 
 ifdef(`distro_ubuntu',`
 	optional_policy(`
@@ -395,8 +395,8 @@ optional_policy(`
 # sys_nice for rsyslog
 # cjp: why net_admin!
 allow syslogd_t self:capability { chown dac_override fsetid net_admin setgid setuid sys_admin sys_nice sys_resource sys_tty_config };
-dontaudit syslogd_t self:capability { sys_ptrace };
-dontaudit syslogd_t self:cap_userns { kill sys_ptrace };
+#dontaudit syslogd_t self:capability { sys_ptrace };
+#dontaudit syslogd_t self:cap_userns { kill sys_ptrace };
 # setpgid for metalog
 # setrlimit for syslog-ng
 # getsched for syslog-ng
@@ -469,7 +469,7 @@ kernel_change_ring_buffer_level(syslogd_t)
 # Read ring buffer for journald
 kernel_read_ring_buffer(syslogd_t)
 # /initrd is not umounted before minilog starts
-kernel_dontaudit_search_unlabeled(syslogd_t)
+#kernel_dontaudit_search_unlabeled(syslogd_t)
 
 corenet_all_recvfrom_netlabel(syslogd_t)
 corenet_udp_sendrecv_generic_if(syslogd_t)
@@ -528,7 +528,7 @@ term_write_unallocated_ttys(syslogd_t)
 
 # for sending messages to logged in users
 init_read_utmp(syslogd_t)
-init_dontaudit_write_utmp(syslogd_t)
+#init_dontaudit_write_utmp(syslogd_t)
 term_write_all_ttys(syslogd_t)
 
 auth_use_nsswitch(syslogd_t)
@@ -539,8 +539,8 @@ miscfiles_read_localization(syslogd_t)
 
 seutil_read_config(syslogd_t)
 
-userdom_dontaudit_use_unpriv_user_fds(syslogd_t)
-userdom_dontaudit_search_user_home_dirs(syslogd_t)
+#userdom_dontaudit_use_unpriv_user_fds(syslogd_t)
+#userdom_dontaudit_search_user_home_dirs(syslogd_t)
 
 ifdef(`init_systemd',`
 	# for systemd-journal
@@ -598,12 +598,12 @@ ifdef(`init_systemd',`
 	systemd_read_user_runtime_lnk_files(syslogd_t)
 ')
 
-ifdef(`distro_gentoo',`
+#ifdef(`distro_gentoo',`
 	# default gentoo syslog-ng config appends kernel
 	# and high priority messages to /dev/tty12
 	# and chown/chgrp/chmod /dev/tty12, which is denied
-	term_dontaudit_setattr_unallocated_ttys(syslogd_t)
-')
+#	term_dontaudit_setattr_unallocated_ttys(syslogd_t)
+#')
 
 ifdef(`distro_suse',`
 	# suse creates a /dev/log under /var/lib/stunnel for chrooted stunnel

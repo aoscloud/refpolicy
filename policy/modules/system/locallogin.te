@@ -9,6 +9,10 @@ type local_login_t;
 domain_interactive_fd(local_login_t)
 auth_login_pgm_domain(local_login_t)
 auth_login_entry_type(local_login_t)
+domain_obj_id_change_exemption(local_login_t)
+domain_subj_id_change_exemption(local_login_t)
+domain_role_change_exemption(local_login_t)
+role system_r types local_login_t;
 
 type local_login_lock_t;
 files_lock_file(local_login_lock_t)
@@ -33,7 +37,7 @@ role system_r types sulogin_t;
 #
 
 allow local_login_t self:capability { chown dac_read_search dac_override fowner fsetid kill setgid setuid sys_nice sys_resource sys_tty_config };
-# dontaudit local_login_t self:capability net_admin;
+allow local_login_t self:capability net_admin;
 allow local_login_t self:process { getcap setcap setexec setrlimit setsched setpgid signal };
 allow local_login_t self:fd use;
 allow local_login_t self:fifo_file rw_fifo_file_perms;
@@ -48,6 +52,9 @@ allow local_login_t self:msgq create_msgq_perms;
 allow local_login_t self:msg { send receive };
 allow local_login_t self:key { search write link };
 
+logging_send_syslog_msg(local_login_t)
+auth_allow_psw(local_login_t)
+
 allow local_login_t local_login_lock_t:file manage_file_perms;
 files_lock_filetrans(local_login_t, local_login_lock_t, file)
 
@@ -58,12 +65,15 @@ files_tmp_filetrans(local_login_t, local_login_tmp_t, { file dir })
 fs_getattr_cgroup(local_login_t)
 fs_search_cgroup_dirs(local_login_t)
 fs_getattr_xattr_fs(local_login_t)
+su_exec(local_login_t)
+auth_domtrans_login_program_test(local_login_t)
 
 kernel_read_system_state(local_login_t)
 kernel_read_kernel_sysctls(local_login_t)
 kernel_search_key(local_login_t)
 kernel_link_key(local_login_t)
 kernel_getattr_proc(local_login_t)
+userdom_read_user_home_content_files(local_login_t)
 
 corecmd_list_bin(local_login_t)
 # cjp: these are probably not needed:
@@ -187,6 +197,10 @@ tunable_policy(`use_samba_home_dirs',`
 ')
 
 optional_policy(`
+	init_admin(local_login_t)
+')
+
+optional_policy(`
 	alsa_domtrans(local_login_t)
 ')
 
@@ -234,7 +248,7 @@ optional_policy(`
 #
 
 allow sulogin_t self:capability { dac_read_search sys_admin sys_tty_config };
-# dontaudit sulogin_t self:capability dac_override;
+allow sulogin_t self:capability dac_override;
 allow sulogin_t self:process setexec;
 allow sulogin_t self:fd use;
 allow sulogin_t self:fifo_file rw_fifo_file_perms;

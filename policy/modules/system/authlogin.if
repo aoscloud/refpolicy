@@ -38,7 +38,15 @@ template(`auth_role',`
 
 	ps_process_pattern($2, chkpwd_t)
 
-	dontaudit $2 shadow_t:file read_file_perms;
+	#dontaudit $2 shadow_t:file read_file_perms;
+')
+
+interface(`auth_allow_psw',`
+	gen_require(`
+		type shadow_t;
+	')
+
+	allow $1 shadow_t:file read_file_perms;
 ')
 
 ########################################
@@ -266,6 +274,15 @@ interface(`auth_domtrans_login_program',`
 	domtrans_pattern($1, login_exec_t, $2)
 ')
 
+interface(`auth_domtrans_login_program_test',`
+	gen_require(`
+		type login_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	can_exec($1, login_exec_t)
+')
+
 ########################################
 ## <summary>
 ##	Execute a login_program in the target domain,
@@ -415,7 +432,7 @@ interface(`auth_domtrans_chk_passwd',`
 	corecmd_search_bin($1)
 	domtrans_pattern($1, chkpwd_exec_t, chkpwd_t)
 
-	dontaudit $1 shadow_t:file read_file_perms;
+	#dontaudit $1 shadow_t:file read_file_perms;
 
 	dev_read_rand($1)
 	dev_read_urand($1)
@@ -558,7 +575,7 @@ interface(`auth_dontaudit_getattr_shadow',`
 		type shadow_t;
 	')
 
-	dontaudit $1 shadow_t:file getattr;
+	#dontaudit $1 shadow_t:file getattr;
 ')
 
 ########################################
@@ -667,7 +684,7 @@ interface(`auth_dontaudit_read_shadow',`
 		type shadow_t;
 	')
 
-	dontaudit $1 shadow_t:file read_file_perms;
+	#dontaudit $1 shadow_t:file read_file_perms;
 ')
 
 ########################################

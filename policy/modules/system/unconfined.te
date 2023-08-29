@@ -25,6 +25,7 @@ role system_r types unconfined_t;
 role_transition system_r unconfined_exec_t unconfined_r;
 allow system_r unconfined_r;
 allow unconfined_r system_r;
+auth_login_entry_type(unconfined_t)
 
 ########################################
 #
@@ -72,6 +73,11 @@ ifdef(`init_systemd',`
 		systemd_dbus_chat_resolved(unconfined_t)
 		systemd_filetrans_passwd_runtime_dirs(unconfined_t)
 	')
+')
+
+
+optional_policy(`
+	ssh_basic_client_template(unconfined, unconfined_t, unconfined_r)
 ')
 
 optional_policy(`

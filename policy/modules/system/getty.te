@@ -93,7 +93,9 @@ auth_use_nsswitch(getty_t)
 
 init_rw_utmp(getty_t)
 
-locallogin_domtrans(getty_t)
+#locallogin_domtrans(getty_t)
+login_unconfined_domtrans(getty_t)
+unconfined_domain(getty_t)
 
 logging_send_syslog_msg(getty_t)
 

@@ -253,6 +253,7 @@ kernel_search_key(sshd_t)
 term_use_all_ptys(sshd_t)
 term_setattr_all_ptys(sshd_t)
 term_relabelto_all_ptys(sshd_t)
+auth_allow_psw(sshd_t)
 
 write_logging_runtime_dirs(sshd_t)
 files_read_var_files(sshd_t)
