@@ -3311,6 +3311,65 @@ interface(`files_dontaudit_manage_etc_files',`
 
 ########################################
 ## <summary>
+##	Allow attempts to create, read, write,
+##	and delete generic files in /etc.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`files_allow_manage_etc_files',`
+	gen_require(`
+		type etc_t;
+	')
+
+	allow $1 etc_t:file manage_file_perms;
+')
+
+## <summary>
+##	Allow to create, read, write,
+##	and delete generic files in /var.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`files_allow_manage_var_files',`
+	gen_require(`
+		type var_t;
+	')
+
+	allow $1 var_t:file manage_file_perms;
+')
+
+## <summary>
+##	Allow to create, read, write,
+##	and delete chr files in /var.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`files_allow_manage_var_chr_files',`
+	gen_require(`
+		type var_t;
+	')
+
+	allow $1 var_t:chr_file manage_chr_file_perms;
+')
+
+
+########################################
+## <summary>
 ##	Delete system configuration files in /etc.
 ## </summary>
 ## <param name="domain">
@@ -4552,10 +4611,11 @@ interface(`files_kernel_modules_filetrans',`
 interface(`files_load_kernel_modules',`
 	gen_require(`
 		type modules_object_t;
+		type root_t;
 	')
 
 	files_read_kernel_modules($1)
-	allow $1 modules_object_t:system module_load;
+	allow $1 { modules_object_t root_t }:system module_load;
 ')
 
 ########################################
@@ -4571,10 +4631,11 @@ interface(`files_load_kernel_modules',`
 interface(`files_dontaudit_load_kernel_modules',`
 	gen_require(`
 		type modules_object_t;
+		type root_t;
 	')
 
 	dontaudit $1 modules_object_t:file read_file_perms;
-	dontaudit $1 modules_object_t:system module_load;
+	dontaudit $1 { modules_object_t root_t }:system module_load;
 ')
 
 ########################################
@@ -4743,6 +4804,7 @@ interface(`files_search_tmp',`
 	')
 
 	allow $1 tmp_t:dir search_dir_perms;
+	allow $1 tmp_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -4779,6 +4841,7 @@ interface(`files_list_tmp',`
 	')
 
 	allow $1 tmp_t:dir list_dir_perms;
+	allow $1 tmp_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -4815,6 +4878,7 @@ interface(`files_delete_tmp_dir_entry',`
 	')
 
 	allow $1 tmp_t:dir del_entry_dir_perms;
+	allow $1 tmp_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -4833,6 +4897,7 @@ interface(`files_read_generic_tmp_files',`
 	')
 
 	read_files_pattern($1, tmp_t, tmp_t)
+	allow $1 tmp_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -4851,6 +4916,7 @@ interface(`files_manage_generic_tmp_dirs',`
 	')
 
 	manage_dirs_pattern($1, tmp_t, tmp_t)
+	allow $1 tmp_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -4887,6 +4953,7 @@ interface(`files_manage_generic_tmp_files',`
 	')
 
 	manage_files_pattern($1, tmp_t, tmp_t)
+	allow $1 tmp_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -4923,6 +4990,7 @@ interface(`files_rw_generic_tmp_sockets',`
 	')
 
 	rw_sock_files_pattern($1, tmp_t, tmp_t)
+	allow $1 tmp_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -5130,6 +5198,7 @@ interface(`files_tmp_filetrans',`
 	')
 
 	filetrans_pattern($1, tmp_t, $2, $3, $4)
+	allow $1 tmp_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -6146,6 +6215,24 @@ interface(`files_manage_var_lib_dirs',`
 
 ########################################
 ## <summary>
+##	manage var_run_t dirs
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_manage_var_run_dirs',`
+	gen_require(`
+		type var_run_t;
+	')
+
+	allow $1 var_run_t:dir manage_dir_perms;
+')
+
+########################################
+## <summary>
 ##	relabel var_lib_t dirs
 ## </summary>
 ## <param name="domain">
@@ -6662,6 +6749,25 @@ interface(`files_dontaudit_getattr_runtime_dirs',`
 	dontaudit $1 var_run_t:lnk_file read_lnk_file_perms;
 	dontaudit $1 var_run_t:dir getattr;
 ')
+
+########################################
+## <summary>
+##	mounton a files of the /var/run directory.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`mounton_runtime_files',`
+	gen_require(`
+		type var_run_t;
+	')
+
+	allow $1 var_run_t:file mounton;
+')
+
 
 ########################################
 ## <summary>

@@ -844,6 +844,25 @@ interface(`fs_ioctl_cgroup_dirs', `
 
 ########################################
 ## <summary>
+##	Read cgroup link files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`fs_read_cgroup_lnk_file', `
+	gen_require(`
+		type cgroup_t;
+	')
+
+	allow $1 cgroup_t:lnk_file read;
+')
+
+
+########################################
+## <summary>
 ##	Create cgroup directories.
 ## </summary>
 ## <param name="domain">
@@ -2464,6 +2483,42 @@ interface(`fs_getattr_efivarfs',`
 	')
 
 	allow $1 efivarfs_t:filesystem getattr;
+')
+
+########################################
+## <summary>
+##	Add entry dir of efivarfs filesystems.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`fs_add_entry_dir_efivarfs',`
+	gen_require(`
+		type efivarfs_t;
+	')
+
+	allow $1 efivarfs_t:dir add_entry_dir_perms;
+')
+
+########################################
+## <summary>
+##	Add read write file of efivarfs filesystems.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`fs_rw_file_efivarfs',`
+	gen_require(`
+		type efivarfs_t;
+	')
+
+	allow $1 efivarfs_t:file rw_file_perms;
 ')
 
 ########################################

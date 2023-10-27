@@ -729,6 +729,26 @@ interface(`logging_use_syslogd_fd', `
 
 ########################################
 ## <summary>
+##	Read files from syslogd.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`syslogd_read_files',`
+	gen_require(`
+		type syslogd_t;
+	')
+
+	allow $1 syslogd_t:dir search_dir_perms;
+	allow $1 syslogd_t:file read_file_perms;
+	allow $1 syslogd_t:lnk_file read_lnk_file_perms;
+')
+
+########################################
+## <summary>
 ##	Allow domain to relabelto devlog sock_files
 ## </summary>
 ## <param name="domain">
@@ -843,6 +863,24 @@ interface(`logging_watch_runtime_dirs',`
 	')
 
 	allow $1 syslogd_runtime_t:dir watch;
+')
+
+########################################
+## <summary>
+##	Allow write to syslog runtime dirs.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`write_logging_runtime_dirs',`
+	gen_require(`
+		type syslogd_runtime_t;
+	')
+
+	allow $1 syslogd_runtime_t:sock_file { write getattr };
 ')
 
 ########################################
@@ -1072,10 +1110,12 @@ interface(`logging_append_all_inherited_logs',`
 interface(`logging_read_all_logs',`
 	gen_require(`
 		attribute logfile;
+		type var_log_t;
 	')
 
 	files_search_var($1)
 	allow $1 logfile:dir list_dir_perms;
+	allow $1 var_log_t:lnk_file read_lnk_file_perms;
 	read_files_pattern($1, logfile, logfile)
 ')
 
@@ -1113,10 +1153,12 @@ interface(`logging_watch_all_logs',`
 interface(`logging_exec_all_logs',`
 	gen_require(`
 		attribute logfile;
+		type var_log_t;
 	')
 
 	files_search_var($1)
 	allow $1 logfile:dir list_dir_perms;
+	allow $1 var_log_t:lnk_file read_lnk_file_perms;
 	can_exec($1, logfile)
 ')
 
@@ -1178,6 +1220,7 @@ interface(`logging_manage_generic_log_dirs',`
 
 	files_search_var($1)
 	allow $1 var_log_t:dir manage_dir_perms;
+	allow $1 var_log_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -1198,6 +1241,7 @@ interface(`logging_relabel_generic_log_dirs',`
 
 	files_search_var($1)
 	allow $1 var_log_t:dir relabel_dir_perms;
+	allow $1 var_log_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -1218,6 +1262,7 @@ interface(`logging_read_generic_logs',`
 
 	files_search_var($1)
 	allow $1 var_log_t:dir list_dir_perms;
+	allow $1 var_log_t:lnk_file read_lnk_file_perms;
 	read_files_pattern($1, var_log_t, var_log_t)
 ')
 
@@ -1319,6 +1364,7 @@ interface(`logging_manage_generic_logs',`
 
 	files_search_var($1)
 	manage_files_pattern($1, var_log_t, var_log_t)
+	allow $1 var_log_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################
@@ -1337,6 +1383,7 @@ interface(`logging_watch_generic_logs_dir',`
 	')
 
 	allow $1 var_log_t:dir watch;
+	allow $1 var_log_t:lnk_file read_lnk_file_perms;
 ')
 
 ########################################

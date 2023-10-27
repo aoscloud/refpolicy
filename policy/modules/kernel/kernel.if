@@ -148,6 +148,26 @@ interface(`kernel_setpgid',`
 
 ########################################
 ## <summary>
+##	Read kernel files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`kernel_read_files',`
+	gen_require(`
+		type kernel_t;
+	')
+
+	allow $1 kernel_t:dir search_dir_perms;
+	allow $1 kernel_t:file read_file_perms;
+')
+
+
+########################################
+## <summary>
 ##	Set the priority of kernel threads.
 ## </summary>
 ## <param name="domain">
@@ -1365,6 +1385,24 @@ interface(`kernel_read_core_if',`
 
 ########################################
 ## <summary>
+##	Allows getting attribute and mount the core kernel interface.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`kernel_getattr_mount_core_if',`
+	gen_require(`
+		type proc_kcore_t;
+	')
+
+	allow $1 proc_kcore_t:file { mounton getattr };
+')
+
+########################################
+## <summary>
 ##	Allow caller to read kernel messages
 ##	using the /proc/kmsg interface.
 ## </summary>
@@ -1996,6 +2034,25 @@ interface(`kernel_read_net_sysctls',`
 	list_dirs_pattern($1, { proc_t sysctl_t }, sysctl_net_t)
 ')
 
+
+########################################
+## <summary>
+##	Allow caller to set attribute network sysctls.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`kernel_set_attribute_net_sysctls',`
+	gen_require(`
+		type sysctl_net_t;
+	')
+     allow $1 sysctl_net_t:file setattr;
+')
+
 ########################################
 ## <summary>
 ##	Allow caller to modiry contents of sysctl network files.
@@ -2609,6 +2666,24 @@ interface(`kernel_associate_proc',`
 		type proc_t;
 	')
 	allow $1 proc_t:filesystem associate;
+')
+
+########################################
+## <summary>
+##	Read unlabeled symlinks.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`kernel_read_link_unlabeled',`
+	gen_require(`
+		type unlabeled_t;
+	')
+
+	allow $1 unlabeled_t:lnk_file { read_lnk_file_perms ioctl lock };
 ')
 
 ########################################

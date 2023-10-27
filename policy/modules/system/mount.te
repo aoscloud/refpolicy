@@ -47,6 +47,7 @@ dontaudit mount_t self:process setrlimit;
 
 allow mount_t mount_tmp_t:file manage_file_perms;
 allow mount_t mount_tmp_t:dir manage_dir_perms;
+init_mount_runtime_files(mount_t)
 
 can_exec(mount_t, mount_exec_t)
 
@@ -98,6 +99,8 @@ files_read_usr_files(mount_t)
 files_list_all_mountpoints(mount_t)
 files_dontaudit_write_all_mountpoints(mount_t)
 files_dontaudit_setattr_all_mountpoints(mount_t)
+files_mounton_aos_dirs(mount_t)
+files_relabel_aos(mount_t)
 
 fs_getattr_all_fs(mount_t)
 fs_mount_all_fs(mount_t)
@@ -112,6 +115,7 @@ fs_dontaudit_write_all_image_files(mount_t)
 
 mls_file_read_all_levels(mount_t)
 mls_file_write_all_levels(mount_t)
+mls_process_write_to_clearance(mount_t)
 
 selinux_get_enforce_mode(mount_t)
 
@@ -134,6 +138,10 @@ init_dontaudit_getattr_initctl(mount_t)
 init_dontaudit_read_state(mount_t)
 init_dontaudit_write_runtime_socket(mount_t)
 
+init_manage_dir_utmp(mount_t)
+init_manage_utmp(mount_t)
+init_remove_chr_file_utmp(mount_t)
+
 logging_send_syslog_msg(mount_t)
 
 miscfiles_read_localization(mount_t)
@@ -144,6 +152,14 @@ seutil_read_config(mount_t)
 selinux_getattr_fs(mount_t)
 
 userdom_use_all_users_fds(mount_t)
+
+files_mounton_etc_dirs(mount_t)
+files_mounton_etc_dirs(mount_t)
+files_rw_etc_dirs(mount_t)
+files_manage_var_dirs(mount_t)
+files_allow_manage_var_files(mount_t)
+files_allow_manage_var_chr_files(mount_t)
+files_allow_manage_etc_files(mount_t)
 
 ifdef(`distro_redhat',`
 	optional_policy(`

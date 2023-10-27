@@ -1,0 +1,186 @@
+## <summary>policy for aos components</summary>
+
+########################################
+## <summary>
+##	Execute aos_exec_t in the aos domain.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`aos_domtrans',`
+	gen_require(`
+		type aos_t, aos_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, aos_exec_t, aos_t)
+')
+
+########################################
+## <summary>
+##	Use aos fd.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`use_aos_fd',`
+	gen_require(`
+		type aos_t;
+	')
+
+    allow $1 aos_t:fd use;
+')
+
+########################################
+## <summary>
+##	Manage aos sem.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`manage_aos_sem',`
+	gen_require(`
+		type aos_t;
+	')
+
+    allow $1 aos_t:sem { create destroy unix_write associate read unix_read write };
+')
+
+######################################
+## <summary>
+##	Execute aos in the caller domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`aos_exec',`
+	gen_require(`
+		type aos_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	can_exec($1, aos_exec_t)
+')
+
+########################################
+## <summary>
+##	Read aos var PID files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`aos_read_pid_files',`
+	gen_require(`
+		type aos_var_run_t;
+	')
+
+	files_search_runtime($1)
+	read_files_pattern($1, aos_var_run_t, aos_var_run_t)
+')
+
+########################################
+## <summary>
+##	Manage aos var run dirs.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`manage_aos_var_run_dir',`
+	gen_require(`
+		type aos_var_run_t;
+	')
+
+	allow $1 aos_var_run_t:dir { add_entry_dir_perms read };
+')
+
+########################################
+## <summary>
+##	mounton a /var/aos directory.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_mounton_aos_dirs',`
+	gen_require(`
+		type aos_var_run_t;
+	')
+
+	allow $1 aos_var_run_t:dir mounton;
+')
+
+########################################
+## <summary>
+##	Search a /var/aos directory.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`search_aos_dirs',`
+	gen_require(`
+		type aos_var_run_t;
+	')
+
+	allow $1 aos_var_run_t:dir { search getattr };
+')
+
+########################################
+## <summary>
+##	Manage quota files in /var/aos directory.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_manage_quota_aos',`
+	gen_require(`
+		type aos_var_run_t;
+	')
+
+	allow $1 aos_var_run_t:dir manage_dir_perms;
+	allow $1 aos_var_run_t:file { manage_file_perms quotaon exec_file_perms };
+	allow $1 aos_var_run_t:filesystem { quotaget quotamod };
+')
+
+########################################
+## <summary>
+##	Allow relabeled /var/aos directory.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_relabel_aos',`
+	gen_require(`
+		type aos_var_run_t;
+	')
+
+	allow $1 aos_var_run_t:filesystem { relabelfrom };
+')

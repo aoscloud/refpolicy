@@ -738,6 +738,11 @@ allow container_engine_domain container_ro_file_t:fifo_file { manage_fifo_file_p
 allow container_engine_domain container_ro_file_t:lnk_file { manage_lnk_file_perms relabel_lnk_file_perms };
 allow container_engine_domain container_ro_file_t:sock_file { manage_sock_file_perms relabel_sock_file_perms };
 
+userdom_search_user_runtime_root(container_engine_t)
+userdom_manage_user_runtime_root_dirs(container_engine_t)
+files_map_etc_files(container_engine_t)
+fs_read_cgroup_lnk_file(container_engine_t)
+
 ifdef(`init_systemd',`
 	# needed by runc, which is also invoked by other engines
 	init_run_bpf(container_engine_domain)
@@ -795,6 +800,18 @@ optional_policy(`
 
 allow container_engine_system_domain container_domain:process { sigkill signal signull transition };
 allow container_engine_system_domain container_domain:key { create search setattr view };
+
+files_read_runtime_files(container_engine_system_domain)
+domain_setpriority_all_domains(container_engine_system_domain)
+aos_read_pid_files(container_engine_system_domain)
+files_mounton_aos_dirs(container_engine_system_domain)
+manage_aos_var_run_dir(container_engine_system_domain)
+files_manage_quota_aos(container_engine_system_domain)
+kernel_getattr_mount_core_if(container_engine_system_domain)
+use_aos_fd(container_engine_system_domain)
+files_mounton_runtime_dirs(container_engine_system_domain)
+mounton_runtime_files(container_engine_system_domain)
+init_setattr_stream_socket(container_engine_system_domain)
 
 ps_process_pattern(container_engine_system_domain, container_system_domain)
 allow container_system_domain container_engine_system_domain:fd use;

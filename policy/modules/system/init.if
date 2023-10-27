@@ -996,10 +996,11 @@ interface(`init_stream_connect',`
 #
 interface(`init_unix_stream_socket_connectto',`
 	gen_require(`
-		type init_t;
+		type init_t, initrc_t;
 	')
 
 	allow $1 init_t:unix_stream_socket connectto;
+	allow $1 initrc_t:unix_stream_socket connectto;
 ')
 
 ########################################
@@ -1120,6 +1121,24 @@ interface(`init_rw_inherited_stream_socket',`
 
 ########################################
 ## <summary>
+##	Set attribute init unix streams.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_setattr_stream_socket',`
+	gen_require(`
+		type init_t;
+	')
+
+	allow $1 init_t:unix_stream_socket setattr;
+')
+
+########################################
+## <summary>
 ##	Allow the specified domain to read/write to
 ##	init with unix domain stream sockets.
 ##	</summary>
@@ -1153,6 +1172,24 @@ interface(`init_dontaudit_search_keys',`
 	')
 
 	dontaudit $1 init_t:key search;
+')
+
+########################################
+## <summary>
+##	Attempts to search init keys.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_search_keys',`
+	gen_require(`
+		type init_t;
+	')
+
+	allow $1 init_t:key search;
 ')
 
 ########################################
@@ -1611,6 +1648,24 @@ interface(`init_write_runtime_files', `
 	')
 
 	allow $1 init_runtime_t:file write_file_perms;
+')
+
+######################################
+## <summary>
+##	Allow mount init runtime files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_mount_runtime_files', `
+	gen_require(`
+		type init_runtime_t;
+	')
+
+	allow $1 init_runtime_t:file { getattr mounton };
 ')
 
 ######################################
@@ -2241,6 +2296,25 @@ interface(`init_write_script_pipes',`
 	')
 
 	allow $1 initrc_t:fifo_file write;
+')
+
+########################################
+## <summary>
+##	Read an init script.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_read_script',`
+	gen_require(`
+		type initrc_t;
+	')
+
+	allow $1 initrc_t:dir search_dir_perms;
+	allow $1 initrc_t:file read_file_perms;
 ')
 
 ########################################
@@ -2999,6 +3073,43 @@ interface(`init_manage_utmp',`
 
 	files_search_runtime($1)
 	allow $1 initrc_runtime_t:file manage_file_perms;
+')
+
+########################################
+## <summary>
+##	Create, read, write, and delete utmp dir.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_manage_dir_utmp',`
+	gen_require(`
+		type initrc_runtime_t;
+	')
+
+	files_search_runtime($1)
+	allow $1 initrc_runtime_t:dir manage_dir_perms;
+')
+
+########################################
+## <summary>
+##	Remove chr file perms from utmp.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_remove_chr_file_utmp',`
+	gen_require(`
+		type initrc_runtime_t;
+	')
+
+	allow $1 initrc_runtime_t:chr_file delete_chr_file_perms;
 ')
 
 ########################################
