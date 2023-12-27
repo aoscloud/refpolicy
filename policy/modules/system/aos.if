@@ -164,8 +164,27 @@ interface(`files_manage_quota_aos',`
 
 	allow $1 aos_var_run_t:dir manage_dir_perms;
 	allow $1 aos_var_run_t:file { manage_file_perms quotaon exec_file_perms };
-	allow $1 aos_var_run_t:filesystem { quotaget quotamod };
+	allow $1 aos_var_run_t:filesystem { quotaget quotamod remount getattr };
 ')
+
+########################################
+## <summary>
+##	Manage overlay files in /var/aos directory.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`files_manage_overlay_aos',`
+	gen_require(`
+		type aos_var_run_t;
+	')
+
+	allow $1 aos_var_run_t:lnk_file { read };
+')	
+
 
 ########################################
 ## <summary>
