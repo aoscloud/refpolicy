@@ -369,6 +369,8 @@ ifdef(`init_systemd',`
 	corecmd_bin_domtrans(init_t, initrc_t)
 	corecmd_shell_domtrans(init_t, initrc_t)
 
+	init_domtrans_script(init_t)
+
 	dev_manage_input_dev(init_t)
 	dev_relabel_all_sysfs(init_t)
 	dev_relabel_generic_symlinks(init_t)
