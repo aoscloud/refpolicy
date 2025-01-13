@@ -805,6 +805,10 @@ optional_policy(`
 	iptables_domtrans(container_engine_domain)
 ')
 
+optional_policy(`
+	unconfined_use_fds(container_engine_t)
+')
+
 ########################################
 #
 # Common system container engine local policy
